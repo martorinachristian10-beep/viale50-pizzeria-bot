@@ -1,0 +1,30 @@
+{
+  "prenotazioni_tavoli": [
+    {
+      "timestamp": "26/09/2026 20:00",
+      "sender": "test_1",
+      "dettagli": "Tavolo per 6 sabato 21:30 nome Luca",
+      "conferma": "Confermato"
+    },
+    {
+      "timestamp": "26/09/2026 19:01",
+      "sender": "web_guest_m6sqfs",
+      "dettagli": "Vorrei prenotare un tavolo per 4 per sabato alle 21:00",
+      "conferma": "Ciao! Che piacere, saremo felici di avervi da noi sabato sera! 🍕\n\nPer confermare la prenotazione, mi servirebbe solo un ultimo dettaglio: il nome di riferimento per il tavolo. 😊\n\nA sabato! ⏰"
+    },
+    {
+      "timestamp": "26/09/2026 19:02",
+      "sender": "web_guest_ey6q6t",
+      "dettagli": "Vorrei prenotare un tavolo per 4 per sabato alle 21:00",
+      "conferma": "Ottimo! Sabato alle 21:00 per 4 persone è segnato. 🍕😊\n\nPer completare la prenotazione, mi servirebbe solo il nome del referente. Ti ricordo che siamo in Viale della Resistenza, 50. A sabato! ✨"
+    }
+  ],
+  "ordini_domicilio": [
+    {
+      "timestamp": "26/09/2026 20:05",
+      "sender": "test_2",
+      "dettagli": "3 Margherite Via Roma 10 ore 20:30 POS",
+      "conferma": "Registrato"
+    }
+  ]
+}
