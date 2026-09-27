@@ -116,6 +116,7 @@ REGOLE DI COMPORTAMENTO:
      * Non dire MAI che un orario è "occupato", "pieno" o "non disponibile": tu non hai visibilità degli ordini che il personale prende contemporaneamente al telefono o al bancone. Non inventare mai che un orario è bloccato.
      * Raccogli sempre l'orario richiesto dal cliente come "indicativo / desiderato".
      * Quando confermi la presa in carico dell'ordine, specifica sempre con gentilezza che l'orario è indicativo e che la comanda è stata registrata e inviata alla cassa; se dovessero esserci ritardi legati al flusso delle infornate o agli ordini telefonici, la pizzeria lo contatterà per aggiornarlo.
+     * REGOLA AUREA: Non dire MAI "è tutto esaurito", "siamo pieni" o "non c'è posto"! In pizzeria non si dice mai di no: proponi SEMPRE un orario alternativo (ad esempio il 1° turno 20:00/20:30 o il 2° turno 22:00/22:15 per i tavoli, oppure 20-30 minuti prima o dopo per il domicilio).
      * Per urgenze immediate o per sapere i tempi d'attesa esatti minuto per minuto, invita pure a chiamare al 328 834 6506.
 4. Giorno di chiusura: ricorda sempre che il Lunedì siamo chiusi.
 5. Se chiedono cose non presenti nei dati o richieste speciali per eventi numerosi (+15 persone), invitali a concordare i dettagli chiamando direttamente il 328 834 6506.
@@ -436,6 +437,10 @@ h2 { font-size: 18px; margin-top: 0; margin-bottom: 16px; border-bottom: 1px sol
           <div class="item">
             <div class="item-time">🕒 Ricevuta il: {{ p.timestamp }}</div>
             <div class="item-details"><b>Richiesta cliente:</b> {{ p.dettagli }}</div>
+            <div class="actions" style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+              <button onclick="conferma(this)" style="background: #25d366; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;">✅ Conferma Orario</button>
+              <button onclick="proponiAltroOrario('Tavolo')" style="background: #ff9800; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;">🔄 Proponi Altro Orario</button>
+            </div>
           </div>
         {% endfor %}
       {% else %}
@@ -450,6 +455,10 @@ h2 { font-size: 18px; margin-top: 0; margin-bottom: 16px; border-bottom: 1px sol
           <div class="item">
             <div class="item-time">🕒 Ricevuto il: {{ o.timestamp }}</div>
             <div class="item-details"><b>Dettagli ordine:</b> {{ o.dettagli }}</div>
+            <div class="actions" style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+              <button onclick="conferma(this)" style="background: #25d366; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;">✅ Conferma Orario</button>
+              <button onclick="proponiAltroOrario('Domicilio')" style="background: #ff9800; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;">🔄 Proponi Altro Orario</button>
+            </div>
           </div>
         {% endfor %}
       {% else %}
@@ -458,6 +467,24 @@ h2 { font-size: 18px; margin-top: 0; margin-bottom: 16px; border-bottom: 1px sol
     </div>
   </div>
 </div>
+<script>
+function conferma(btn) {
+  btn.parentElement.innerHTML = '<span style="color: #2e7d32; font-weight: bold; font-size: 13px;">✅ Confermato con successo</span>';
+}
+
+function proponiAltroOrario(tipo) {
+  const orario = prompt("Inserisci l'orario alternativo da proporre al cliente (es. 21:15 o 22:00):", "21:30");
+  if (!orario) return;
+  const msg = tipo === 'Domicilio' 
+    ? 'Ciao da Pizzeria Viale50! 🍕 Per l\'orario richiesto abbiamo le infornate piene, ma riusciamo a consegnare per le ' + orario + '! Ti va bene lo stesso? Rispondi pure a questo messaggio!'
+    : 'Ciao da Pizzeria Viale50! 🍕 Per l\'orario richiesto la sala è al completo, ma abbiamo un bel tavolo libero per le ' + orario + '! Ti andrebbe bene? Rispondi pure a questo messaggio!';
+  
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(msg);
+  }
+  alert("📋 Messaggio copiato negli appunti! Puoi inviarlo al cliente:\n\n" + msg);
+}
+</script>
 </body>
 </html>
 """
