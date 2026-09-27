@@ -23,7 +23,14 @@ except ImportError:
 
 app = Flask(__name__)
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", "")
+def get_gemini_api_key():
+    for k in ["GEMINI_API_KEY", "GOOGLE_API_KEY", "gemini_api_key", "GEMINI_KEY", "API_KEY"]:
+        val = os.environ.get(k)
+        if val and val.strip():
+            return val.strip()
+    return ""
+
+GEMINI_API_KEY = get_gemini_api_key()
 MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
 PORT = int(os.environ.get("PORT", "5001"))
 
@@ -113,10 +120,11 @@ def ask_gemini_pizzeria(sender, user_text):
         history[:] = history[-MAX_TURNS:]
 
     try:
-        if not GEMINI_API_KEY:
+        active_key = get_gemini_api_key() or GEMINI_API_KEY
+        if not active_key:
             return "Ciao! Al momento il sistema di prenotazione è in manutenzione. Puoi chiamarci direttamente al 328 834 6506! 🍕"
 
-        client = genai.Client(api_key=GEMINI_API_KEY)
+        client = genai.Client(api_key=active_key)
 
         # Formatta cronologia
         contents = []
@@ -223,6 +231,17 @@ def api_chat():
         return jsonify({"reply": "Scrivi un messaggio!"}), 400
     reply = ask_gemini_pizzeria(sender, msg)
     return jsonify({"reply": reply}), 200
+
+@app.route("/api/status", methods=["GET"])
+def api_status():
+    key = get_gemini_api_key() or GEMINI_API_KEY
+    matching = [k for k in os.environ.keys() if any(s in k.upper() for s in ["GEMINI", "GOOGLE", "API_KEY"])]
+    return jsonify({
+        "status": "online",
+        "has_gemini_key": bool(key),
+        "key_prefix": key[:8] + "..." if key else None,
+        "matching_env_keys": matching
+    }), 200
 
 @app.route("/admin", methods=["GET"])
 def admin_view():
